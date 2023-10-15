@@ -25,6 +25,7 @@ header {
     /* border: 5px solid orange; */
 }
 
+/* Start Quiz Button */
 button {
     background-color: purple;
     color: white;
@@ -36,10 +37,26 @@ button {
 
 }
 
-#questions {
+/* Next Button */
+.nextBtn {
+    background-color: purple;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 47%;
+    margin-right: 47%;
+}
+
+#quizQuestions {
     display: none;
 }
 
+#answer-buttons {
+    /* border: 5px solid red; */
+}
+
+/* Answer Button */
 .aBtn {
     margin: 1% 47%;
 }
@@ -61,4 +78,8 @@ p {
     margin-right: auto;
     text-align: center;
     font-size: 110%;
+}
+
+#question {
+    font-size: 25px;
 }
