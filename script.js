@@ -53,8 +53,8 @@ var questions = [
 // Listen for a click event on toggle switch
 document.querySelector(".startQuiz").addEventListener("click", function(){
     setTime();
-    intro.setAttribute("style", "display: none;");
-    quizQuestions.setAttribute("style", "display: block;");
+    intro.setAttribute("style", "display: none;"); //hide the div containing the into paragraph
+    document.getElementById("quizQuestions").setAttribute("style", "display: block;");//display the block containing the quiz questions and next button
 
 });//End of function
 
@@ -82,29 +82,68 @@ function setTime() {
 
 //<--------------Quiz variables funtions---------->
 
-var questEl = document.getElementById("question");
-var ansEl = document.getElementById("answer-buttons");
-var currentQuestionIndex = 0;
-var score = 0; 
+var questEl = document.getElementById("question");      // This is the H1 elements that displays the question
+var ansEl = document.getElementById("answer-buttons");  // This is a div that contains the answer buttons
+var nextButton = document.querySelector(".nextBtn");    // This is the next button to advance to the next question
+var currentQuestionIndex = 0;                           // This variable sets the current question to questions 1
+var score = 0;                                          // This variable sets the initial score to 0
 
-function beginQuiz(){
+function beginQuiz(){                  // When executed calls the displayQuestion function 
     var currentQuestionIndex = 0;
     var score = 0;
     displayQuestion();
 }
 
-function displayQuestion(){
-        var currentQuestion = questions[currentQuestionIndex];
-        var questionNum = currentQuestionIndex + 1;
-            questEl.innerHTML = questionNum + ". " + currentQuestion.questions;
-
-            currentQuestion.answers.forEach(answers => {
-        var button  = document.createElement("button");
-            button.innerHTML = answers.Text;
-            button.classList.add("aBtn");
-            ansEl.appendChild(button);
-        }
-    );
+function clearQuest(){
+    while(ansEl.firstChild){
+        ansEl.removeChild(ansEl.firstChild);
+    }
 }
 
+
+function displayQuestion(){
+        clearQuest(); //clears the initial children seen in index.html
+        var currentQuestion = questions[currentQuestionIndex]; //establlishes the current questions as question 1
+        var questionNum = currentQuestionIndex + 1; //identifies the current question as 1 instead of 0
+            
+            questEl.innerHTML = questionNum + ". " + currentQuestion.questions; //displays the h1 quest. 
+            currentQuestion.answers.forEach(answers => { //=> hashrocket, shorthand notation defines functions    
+                var button  = document.createElement("button"); //creates quiz buttons
+                button.innerHTML = answers.Text; //applies answers text to buttons
+                button.classList.add("aBtn"); //applies class/style from css to buttons
+                ansEl.appendChild(button); //adds buttons to page
+                if(answers.correct){ //if the button has a value of correct
+                    button.dataset.correct = answers.correct //add answers.correct (true or false) to the dataset
+                }
+            });
+        }
+//all the code below breaks the displayQuestion Function
+        // function handleNextButton(){
+        //     currentQuestionIndex++;
+        //     if(currentQuestionIndex < currentQuestionIndex.length){
+        //         displayQuestion();
+        //     }else{
+        //         beginQuiz();
+        //     }
+        // }
+
+        // nextButton.addEventListener("click", ()=>{// nextButton = document.querySelector(".nxtBtn");
+        //     if(currentQuestionIndex < currentQuestionIndex.length){
+        //         handleNextButton();
+        //     }
+        //     else{
+        //         beginQuiz();
+        //     }
+
+        // });
+
+
+
+
+
 beginQuiz();
+
+
+
+//clearInterval method to stop the timer
+//need ani if statement to determine is time has run out and stop the quiz
