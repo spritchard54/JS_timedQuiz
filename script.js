@@ -62,15 +62,17 @@ document.querySelector(".startQuiz").addEventListener("click", function(){
 //<-------------------Begin Timer Code------------------------->
 // Selects timer element
 var timerEl = document.getElementById("timer");
-var secondsLeft = 10;
+var secondsLeft = 120;
+timerEl.textContent =  secondsLeft;
+
 
 function setTime() {
   // Sets interval in variable
   var timerInterval = setInterval(function() {
     secondsLeft--;
-    timerEl.textContent = "You have " + secondsLeft + " seconds remaining";
+    timerEl.textContent =  secondsLeft;
 
-    if(secondsLeft === 0) {
+    if(secondsLeft < 1) {
       // Stops execution of action at set interval
       clearInterval(timerInterval);
     }
@@ -87,6 +89,8 @@ var ansEl = document.getElementById("answer-buttons");  // This is a div that co
 var nextButton = document.querySelector(".nextBtn");    // This is the next button to advance to the next question
 var currentQuestionIndex = 0;                           // This variable sets the current question to questions 1
 var score = 0;                                          // This variable sets the initial score to 0
+var answerResponse = document.getElementById('response');
+
 
 function beginQuiz(){                  // When executed calls the displayQuestion function 
     var currentQuestionIndex = 0;
@@ -95,8 +99,9 @@ function beginQuiz(){                  // When executed calls the displayQuestio
 }
 
 function clearQuest(){
-    while(ansEl.firstChild){
-        ansEl.removeChild(ansEl.firstChild);
+    while(ansEl.firstElementChild){
+        console.log('Clearquest Function', ansEl.firstElementChild);
+        ansEl.removeChild(ansEl.firstElementChild);
     }
 }
 
@@ -105,7 +110,7 @@ function displayQuestion(){
         clearQuest(); //clears the initial children seen in index.html
         var currentQuestion = questions[currentQuestionIndex]; //establlishes the current questions as question 1
         var questionNum = currentQuestionIndex + 1; //identifies the current question as 1 instead of 0
-            
+            currentQuestionIndex++
             questEl.innerHTML = questionNum + ". " + currentQuestion.questions; //displays the h1 quest. 
             currentQuestion.answers.forEach(answers => { //=> hashrocket, shorthand notation defines functions    
                 var button  = document.createElement("button"); //creates quiz buttons
@@ -113,31 +118,29 @@ function displayQuestion(){
                 button.classList.add("aBtn"); //applies class/style from css to buttons
                 ansEl.appendChild(button); //adds buttons to page
                 if(answers.correct){ //if the button has a value of correct
-                    button.dataset.correct = answers.correct //add answers.correct (true or false) to the dataset
+                    button.dataset.correct = answers.correct //add answers.correct to dataset attr
                 }
+                
+                
+                button.addEventListener('click', function () {
+                    if(!button.dataset.correct){
+                        secondsLeft -= 10
+                        timerEl.textContent =  secondsLeft;
+
+                        answerResponse.textContent = 'Wrong Answer'
+                    }else{
+                        answerResponse.textContent = 'Correct'
+                    }
+                    
+                    displayQuestion();
+
+                });
             });
         }
-//all the code below breaks the displayQuestion Function
-        // function handleNextButton(){
-        //     currentQuestionIndex++;
-        //     if(currentQuestionIndex < currentQuestionIndex.length){
-        //         displayQuestion();
-        //     }else{
-        //         beginQuiz();
-        //     }
-        // }
-
-        // nextButton.addEventListener("click", ()=>{// nextButton = document.querySelector(".nxtBtn");
-        //     if(currentQuestionIndex < currentQuestionIndex.length){
-        //         handleNextButton();
-        //     }
-        //     else{
-        //         beginQuiz();
-        //     }
-
-        // });
 
 
+//need to stop the time and create and end quiz function, show a new div or screen with the time remaining as the score and then, need submit button
+//localStorage.setItem('Keyname, 'value);
 
 
 
