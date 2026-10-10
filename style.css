@@ -52,6 +52,10 @@ button {
     display: none;
 }
 
+#quizResults {
+    display: none;
+}
+
 #answer-buttons {
     /* border: 5px solid red; */
 }
