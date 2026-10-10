@@ -1,4 +1,4 @@
-console.log("Javascipt Quiz .js is connected");
+// console.log("Javascipt Quiz .js is connected");
 
 // <--------------------- Start (Q)s and (A)s ----------------------->
 var questions = [
@@ -56,9 +56,10 @@ document.querySelector(".startQuiz").addEventListener("click", function () {
   setTime();
   intro.setAttribute("style", "display: none;"); //hide the div containing the intro paragraph
   document
-    .getElementById("quizQuestions")
-    .setAttribute("style", "display: block;"); //display the block containing the quiz questions and next button
-}); //End of function
+    .getElementById("quizQuestionsEl")
+    .setAttribute("style", "display: block;");
+  beginQuiz();
+});
 
 //<-------------------Begin Timer Code------------------------->
 // Selects timer element
@@ -68,11 +69,12 @@ var secondsLeft = 120;
 timerEl.textContent = secondsLeft;
 
 var timerInterval;
+var questionTimeout;
 
 function setTime() {
   // Sets interval in variable
   timerInterval = setInterval(function () {
-    secondsLeft--;
+    secondsLeft = Math.max(0, secondsLeft - 1);
     timerEl.textContent = secondsLeft;
 
     if (secondsLeft < 1) {
@@ -83,16 +85,21 @@ function setTime() {
 }
 
 //<--------------Quiz variables funtions---------->
-var quizBlock = document.getElementById("quizQuestions");
-var questEl = document.getElementById("question"); // This is the H1 elements that displays the question
-
-var ansEl = document.getElementById("answer-buttons"); // This is a div that contains the answer buttons
-var nextButton = document.querySelector(".nextBtn"); // This is the next button to advance to the next question
-var currentQuestionIndex = 0; // This variable sets the current question to questions 1
-var score = 0; // This variable sets the initial score to 0
+var quizBlock = document.getElementById("quizBlock");
+var questEl = document.getElementById("question");
+var ansEl = document.getElementById("answer-buttons");
+var nextButton = document.querySelector(".nextBtn");
+var currentQuestionIndex = 0;
+var score = 0;
 var answerResponse = document.getElementById("response");
 var finalScoreEl = document.getElementById("finalScore");
 var quizResultsEl = document.getElementById("quizResults");
+var scoreFormEl = document.getElementById("scoreForm");
+var initialsEl = document.getElementById("initials");
+var highScoresSectionEl = document.getElementById("highScoresSectionEl");
+var highScoresListEl = document.getElementById("highScoresListEl");
+var playAgainBtnEl = document.getElementById("playAgainBtn");
+var quizQuestionsEl = document.getElementById("quizQuestionsEl");
 
 function beginQuiz() {
   // When executed calls the displayQuestion function
@@ -103,14 +110,57 @@ function beginQuiz() {
 
 function endQuiz() {
   clearInterval(timerInterval);
+  clearTimeout(questionTimeout);
+
   quizBlock.setAttribute("style", "display: none");
   quizResultsEl.setAttribute("style", "display: block");
   finalScoreEl.textContent = secondsLeft;
 }
 
+scoreFormEl.addEventListener("submit", function (event) {
+  event.preventDefault();
+  var initials = initialsEl.value;
+  var newScore = { initials: initials, score: secondsLeft };
+  var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+  highScores.push(newScore);
+  highScores.sort(function (a, b) {
+    return b.score - a.score;
+  });
+  localStorage.setItem("highScores", JSON.stringify(highScores));
+  quizResultsEl.setAttribute("style", "display:none");
+  displayHighScores();
+});
+
+playAgainBtnEl.addEventListener("click", function (event) {
+  currentQuestionIndex = 0;
+  secondsLeft = 120;
+  timerEl.textContent = secondsLeft;
+  setTime();
+  highScoresSectionEl.setAttribute("style", "display: none");
+  quizQuestionsEl.setAttribute("style", "display: block");
+  displayQuestion();
+});
+
+viewHS.addEventListener("click", function () {
+  intro.setAttribute("style", "display: none");
+    displayHighScores();
+  
+});
+
+function displayHighScores() {
+  var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+  highScoresListEl.innerHTML = "";
+  highScores.forEach(function (score) {
+    var listItem = document.createElement("li");
+    listItem.textContent = `${score.initials}: ${score.score}`;
+    highScoresListEl.appendChild(listItem);
+  });
+  highScoresSectionEl.setAttribute("style", "display: block");
+}
+
 function clearQuest() {
   while (ansEl.firstElementChild) {
-    console.log("Clearquest Function", ansEl.firstElementChild);
+    // console.log("Clearquest Function", ansEl.firstElementChild);
     ansEl.removeChild(ansEl.firstElementChild);
   }
 }
@@ -122,6 +172,9 @@ function displayQuestion() {
   }
 
   clearQuest(); //clears the initial children seen in index.html
+
+  answerResponse.textContent = "";
+
   var currentQuestion = questions[currentQuestionIndex]; //establlishes the current questions as question 1
 
   var questionNum = currentQuestionIndex + 1; //identifies the current question as 1 instead of 0
@@ -153,13 +206,19 @@ function displayQuestion() {
       } else {
         answerResponse.textContent = "Correct";
       }
+      var answerButtons = ansEl.querySelectorAll("button");
+
+      answerButtons.forEach(function (answer) {
+        answer.disabled = true;
+      });
+
       if (secondsLeft === 0) {
         endQuiz();
         return;
       }
-      displayQuestion();
+      questionTimeout = setTimeout(function () {
+        displayQuestion();
+      }, 1000);
     });
   });
 }
-
-beginQuiz();

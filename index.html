@@ -1,46 +1,59 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JavaScript Knowledge Check</title>
-    <link rel="stylesheet" href="style.css  ">
-</head>
-<body>
-<header>
-    <h3 id="viewHS">View Highscores</h3>
-    <h3 >You have <span id="timer"> </span> second after you click "Start Quiz."</h3>
-</header>
+    <link rel="stylesheet" href="style.css  " />
+  </head>
+  <body>
+    <header>
+      <button id="viewHS" type="button">View Highscores</button>
+      <h3>
+        You have <span id="timer"> </span> second after you click "Start Quiz."
+      </h3>
+    </header>
 
-<section id="container">
-    <section id="quizBlock">
+    <section id="container">
+      <section id="quizBlock">
         <div id="intro">
-            <h1>Coding Quiz Challenge</h1>
-            <p>
-                Try to answer the following code-related questions withn the time limit. Keep in mind that incorrect answers will penalize your scoretime by 10 second.
-            </p>
-            <button class="startQuiz">Start Quiz</button>
+          <h1>Coding Quiz Challenge</h1>
+          <p>
+            Try to answer the following code-related questions withn the time
+            limit. Keep in mind that incorrect answers will penalize your
+            scoretime by 10 second.
+          </p>
+          <button class="startQuiz">Start Quiz</button>
         </div>
-        
 
-        <div id="quizQuestions">
-            <h1 id="question">This is question No. 1</h1>
-                <div id="answer-buttons">
-                    <button class="aBtn">Answer 1</button>
-                    <button class="aBtn">Answer 2</button>
-                    <button class="aBtn">Answer 3</button>
-                    <button class="aBtn">Answer 4</button>    
-                </div>
-                <div>
-                    <h3 id="response"></h3>
-                </div>
+        <div id="quizQuestionsEl" style="display: none;">
+          <h1 id="question">This is question No. 1</h1>
+          <div id="answer-buttons">
+            <button class="aBtn">Answer 1</button>
+            <button class="aBtn">Answer 2</button>
+            <button class="aBtn">Answer 3</button>
+            <button class="aBtn">Answer 4</button>
+          </div>
+          <div>
+            <h3 id="response"></h3>
+          </div>
         </div>
         <div id="quizResults">
-            <h2>Quiz Complete!</h2>
-            <p>Your final score is:</p>
-            <h2 id="finalScore"></h2>
+          <h2>Quiz Complete!</h2>
+          <p>Your final score is:</p>
+          <h2 id="finalScore"></h2>
+          <form id="scoreForm">
+            <label for="initials">Enter your initials:</label>
+            <input type="text" id="initials" maxlength="3" required />
+            <button type="submit">Save Score</button>
+          </form>
         </div>
+        <section id="highScoresSectionEl" style="display: none">
+          <h2>High Scores</h2>
+          <ol id="highScoresListEl"></ol>
+          <button id="playAgainBtn" type="submit">Play again</button>
+        </section>
+      </section>
     </section>
-</section>  
-<script src= "script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
