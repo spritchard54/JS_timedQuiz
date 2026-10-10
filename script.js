@@ -55,9 +55,7 @@ var questions = [
 document.querySelector(".startQuiz").addEventListener("click", function () {
   setTime();
   intro.setAttribute("style", "display: none;"); //hide the div containing the intro paragraph
-  document
-    .getElementById("quizQuestionsEl")
-    .setAttribute("style", "display: block;");
+  quizQuestionsEl.setAttribute("style", "display: block;");
   beginQuiz();
 });
 
@@ -85,12 +83,9 @@ function setTime() {
 }
 
 //<--------------Quiz variables funtions---------->
-var quizBlock = document.getElementById("quizBlock");
 var questEl = document.getElementById("question");
 var ansEl = document.getElementById("answer-buttons");
-var nextButton = document.querySelector(".nextBtn");
 var currentQuestionIndex = 0;
-var score = 0;
 var answerResponse = document.getElementById("response");
 var finalScoreEl = document.getElementById("finalScore");
 var quizResultsEl = document.getElementById("quizResults");
@@ -100,11 +95,12 @@ var highScoresSectionEl = document.getElementById("highScoresSectionEl");
 var highScoresListEl = document.getElementById("highScoresListEl");
 var playAgainBtnEl = document.getElementById("playAgainBtn");
 var quizQuestionsEl = document.getElementById("quizQuestionsEl");
+var clearHighScoresBtn = document.getElementById("clearHighScoresBtn");
+var viewHS = document.getElementById("viewHS");
 
 function beginQuiz() {
   // When executed calls the displayQuestion function
   currentQuestionIndex = 0;
-  score = 0;
   displayQuestion();
 }
 
@@ -112,7 +108,7 @@ function endQuiz() {
   clearInterval(timerInterval);
   clearTimeout(questionTimeout);
 
-  quizBlock.setAttribute("style", "display: none");
+  quizQuestionsEl.setAttribute("style", "display: none");
   quizResultsEl.setAttribute("style", "display: block");
   finalScoreEl.textContent = secondsLeft;
 }
@@ -141,15 +137,30 @@ playAgainBtnEl.addEventListener("click", function (event) {
   displayQuestion();
 });
 
+clearHighScoresBtn.addEventListener("click", function () {
+  localStorage.removeItem("highScores");
+
+  displayHighScores();
+});
+
 viewHS.addEventListener("click", function () {
   intro.setAttribute("style", "display: none");
-    displayHighScores();
-  
+  clearInterval(timerInterval);
+  clearTimeout(questionTimeout);
+  quizQuestionsEl.setAttribute("style", "display: none");
+  displayHighScores();
 });
 
 function displayHighScores() {
   var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
   highScoresListEl.innerHTML = "";
+
+  if (highScores.length === 0) {
+    var emptyMessage = document.createElement("li");
+    emptyMessage.textContent = "No high scores yet. Play a game!";
+    highScoresListEl.appendChild(emptyMessage);
+  }
+
   highScores.forEach(function (score) {
     var listItem = document.createElement("li");
     listItem.textContent = `${score.initials}: ${score.score}`;
