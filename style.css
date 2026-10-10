@@ -17,13 +17,7 @@ header {
     text-align: right;
 }
 
-#container {
-    /* border: 5px solid black; */
-}
 
-#quizBlock {
-    /* border: 5px solid orange; */
-}
 
 /* Start Quiz Button */
 button {
@@ -56,9 +50,7 @@ button {
     display: none;
 }
 
-#answer-buttons {
-    /* border: 5px solid red; */
-}
+
 
 /* Answer Button */
 .aBtn {
