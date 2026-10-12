@@ -67,15 +67,17 @@ var secondsLeft = 120;
 timerEl.textContent = secondsLeft;
 
 var timerInterval;
-var questionTimeout;
+let questionTimeout;
+let quizEnded = false;
 
 function setTime() {
   // Sets interval in variable
+  clearInterval(timerInterval);
   timerInterval = setInterval(function () {
     secondsLeft = Math.max(0, secondsLeft - 1);
     timerEl.textContent = secondsLeft;
 
-    if (secondsLeft < 1) {
+    if (secondsLeft === 0) {
       // Stops execution of action at set interval
       endQuiz();
     }
@@ -100,11 +102,18 @@ var viewHS = document.getElementById("viewHS");
 
 function beginQuiz() {
   // When executed calls the displayQuestion function
+  quizEnded = false;
   currentQuestionIndex = 0;
   displayQuestion();
 }
 
 function endQuiz() {
+  if (quizEnded) {
+    return;
+  }
+
+  quizEnded = true;
+
   clearInterval(timerInterval);
   clearTimeout(questionTimeout);
 
@@ -115,7 +124,7 @@ function endQuiz() {
 
 scoreFormEl.addEventListener("submit", function (event) {
   event.preventDefault();
-  var initials = initialsEl.value;
+  var initials = initialsEl.value.toUpperCase();
   var newScore = { initials: initials, score: secondsLeft };
   var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
   highScores.push(newScore);
@@ -127,14 +136,13 @@ scoreFormEl.addEventListener("submit", function (event) {
   displayHighScores();
 });
 
-playAgainBtnEl.addEventListener("click", function (event) {
-  currentQuestionIndex = 0;
+playAgainBtnEl.addEventListener("click", function () {
   secondsLeft = 120;
   timerEl.textContent = secondsLeft;
   setTime();
   highScoresSectionEl.setAttribute("style", "display: none");
   quizQuestionsEl.setAttribute("style", "display: block");
-  displayQuestion();
+  beginQuiz();
 });
 
 clearHighScoresBtn.addEventListener("click", function () {

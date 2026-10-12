@@ -1,44 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    text-align: center;
+}
+
 header {
     display: flex;
-    /* border: 5px solid grey; */
-    padding: 0% 1%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
 }
-
-#viewHS {
-    padding: none;
-    flex: 0 1 50%;
-    /* border: 5px solid red; */
-}
-
-#timer {
-    flex: 0 1 50%;
-    padding: None;
-    /* border: 5px solid blue; */
-    text-align: right;
-}
-
 
 /* Start Quiz Button */
 button {
-    background-color: purple;
+    background-color: rgb(14, 37, 107);
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 47%;
-    margin-right: 47%;
-
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-/* Next Button */
-.nextBtn {
-    background-color: purple;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 47%;
-    margin-right: 47%;
+.startQuiz {
+    display: block;
+    margin: 0 auto;
 }
 
 #quizQuestions {
@@ -47,31 +34,78 @@ button {
 
 #quizResults {
     display: none;
+    width: 90%;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
 }
 
+#finalScore {
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgb(14, 37, 107);
+}
 
+#highScoresListEl {
+    max-width: 350px;
+    margin: 10px auto;
+    text-align: left;
+}
 
-/* Answer Button */
+#highScoresListEl li+li {
+    margin-top: 10px;
+}
+
+#highScoresSectionEl {
+    display: none;
+    width: 90%;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+#answer-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
 .aBtn {
-    margin: 5px 10px;
+    width: 90%;
+    max-width: 400px;
+    padding: 12px 16px;
+    text-align: left;
+    transition: .5s;
+
 }
 
-h1 {
-    font-size: 140%;
-    margin-left: auto;
-    margin-right: auto;
-    /* border: 5px solid green; */
-    width: 40%;
-    text-align: center;
-    font-weight: 3000;
+.aBtn:hover {
+    background-color: rgb(76, 84, 147);
+}
+
+.aBtn:hover:not(:disabled) {
+    background-color: rgb(76, 84, 147);
+}
+
+.aBtn:focus-visible {
+    outline: 3px solid orange;
+}
+
+.aBtn:disabled {
+    cursor: not-allowed;
+    opacity: .6;
+}
+
+button:focus-visible {
+    outline: 3px solid orange;
 }
 
 p {
-    width: 33%;
-    /* border: 5px solid navy; */
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+    width: 90%;
+    max-width: 600px;
+    margin: 20 auto;
     font-size: 110%;
 }
 
