@@ -62,6 +62,8 @@ button {
     max-width: 500px;
     margin: 30px auto;
     padding: 20px;
+    background-color: rgb(173, 192, 251);
+    border-radius: 5px;
 }
 
 #answer-buttons {
@@ -79,10 +81,6 @@ button {
     text-align: left;
     transition: .5s;
 
-}
-
-.aBtn:hover {
-    background-color: rgb(76, 84, 147);
 }
 
 .aBtn:hover:not(:disabled) {
@@ -111,4 +109,8 @@ p {
 
 #question {
     font-size: 25px;
+}
+
+#playAgainBtn, #clearHighScoresBtn {
+    margin-top: 20px;
 }
